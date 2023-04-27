@@ -64,8 +64,10 @@ entry_dict = {
     "humidity": "",
 }
 methodSensor = {
-    "method": "",
-    "params": ""
+    "Fan_1": "",
+    "Fan_2": "",
+    "Led_1":"",
+    "Led_2":""
 }
 
 def processData(data):
