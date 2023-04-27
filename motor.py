@@ -20,22 +20,39 @@ def recv_message(client, userdata, message):
     cmd = 0
     try:
         jsonobj = json.loads(message.payload)['shared']
-        if jsonobj['method'] == "autoMode" and jsonobj['params'] == "active":
-            autoMode = 1
-        if jsonobj['method'] == "autoMode" and jsonobj['params'] == "inactive":
-            autoMode = 0
-        if jsonobj['method'] == "setFan_1" and jsonobj['params'] == "On":
+        if jsonobj['Fan_1'] == "1" :
             cmd = 0
-        if jsonobj['method'] == "setFan_1" and jsonobj['params'] == "Off":
-            cmd = 1 
-        if jsonobj['method'] == "setFan_2" and jsonobj['params'] == "On":
+            print(cmd)
+            print(ser.write((str(cmd)).encode()))
+        elif jsonobj['Fan_1'] == "0" :
+            cmd = 1
+            print(cmd)
+            print(ser.write((str(cmd)).encode()))
+        if jsonobj['Fan_2'] == "1":
             cmd = 2
-        if jsonobj['method'] == "setFan_2" and jsonobj['params'] == "Off":
+            print(cmd)
+            print(ser.write((str(cmd)).encode()))
+        elif jsonobj['Fan_2'] == "0":
             cmd = 3
-        if jsonobj['method'] == "setFan_3" and jsonobj['params'] == "On":
-            cmd = 'a'
-        if jsonobj['method'] == "setFan_3" and jsonobj['params'] == "Off":
-            cmd = 'b'
+            print(cmd)
+            ser.write((str(cmd)).encode())
+        elif jsonobj['Led_1'] == "1":
+            cmd = 4
+            print(cmd)
+            ser.write((str(cmd)).encode())
+        elif jsonobj['Led_1'] == "0":
+            cmd = 5
+            print(cmd)
+            ser.write((str(cmd)).encode())
+        elif jsonobj['Led_2'] == "1":
+            cmd = 6
+            print(cmd)
+            ser.write((str(cmd)).encode())
+        elif jsonobj['Led_2'] == "0":
+            cmd = 7
+            print(cmd)
+            ser.write((str(cmd)).encode())
+            
     except:
         pass
     if isMicrobitConnected:
@@ -89,8 +106,10 @@ entry_dict = {
     "humidity": "",
 }
 methodSensor = {
-    "method": "",
-    "params": ""
+    "Fan_1": "",
+    "Fan_2": "",
+    "Led_1":"",
+    "Led_2":""
 }
 
 
@@ -145,6 +164,6 @@ while True:
     if isMicrobitConnected:
         print("Yolobit access is accepted!")
         readSerial()
-    client.publish('v1/devices/me/attributes/request/1', '{"sharedKeys":"method,params"}')
+    client.publish('v1/devices/me/attributes/request/1', '{"sharedKeys":"Fan_1,Fan_2,Led_1,Led_2"}')
     time.sleep(1)
     
